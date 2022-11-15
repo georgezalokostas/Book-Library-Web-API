@@ -16,5 +16,10 @@ namespace BookLibrary_API.Repositories
         {
             return _context.Books.OrderBy(x => x.Id).ToList();
         }
+
+        public Book? GetBookById(int id)
+        {
+            return _context.Books.Where(x => x.Id == id).FirstOrDefault() ?? null;
+        }
     }
 }

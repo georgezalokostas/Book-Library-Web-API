@@ -27,5 +27,18 @@ namespace BookLibrary_API.Controllers
 
             return Ok(books);
         }
+
+        [HttpGet]
+        [Route("api/{id}")]
+        [ProducesResponseType(200, Type = typeof(Book))]
+        public IActionResult GetBookById(int id)
+        {
+            var book = _bookrepository.GetBookById(id);
+
+            if(book == null)
+                return BadRequest("Book Not Found");
+
+            return Ok(book);
+        }
     }
 }
