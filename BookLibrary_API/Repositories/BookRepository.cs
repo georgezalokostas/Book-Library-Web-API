@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using BookLibrary_API.Interfaces;
 using BookLibrary_API.Models;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary_API.Repositories
 {
@@ -48,6 +46,22 @@ namespace BookLibrary_API.Repositories
             }
 
             return book;
+        }
+
+        public Book? UpdateBook(Book book)
+        {
+            var myBook = _context.Books.Where(x => x.Id == book.Id).FirstOrDefault();
+
+            if (myBook != null)
+            {
+                myBook.Author = book.Author;
+                myBook.ReleaseDate = book.ReleaseDate;
+                myBook.Title = book.Title;
+
+                _context.SaveChanges();
+            }
+
+            return myBook;
         }
     }
 }

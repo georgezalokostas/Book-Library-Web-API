@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using BookLibrary_API.Interfaces;
+﻿using BookLibrary_API.Interfaces;
 using BookLibrary_API.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Contracts;
 
 namespace BookLibrary_API.Controllers
 {
@@ -11,12 +9,10 @@ namespace BookLibrary_API.Controllers
     public class BookController : Controller
     {
         private readonly IBookRepository _bookrepository;
-        private readonly IMapper _mapper;
 
-        public BookController(IBookRepository bookrepository, Mapper mapper)
+        public BookController(IBookRepository bookrepository)
         {
             _bookrepository = bookrepository;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -68,5 +64,15 @@ namespace BookLibrary_API.Controllers
             return Ok(book);
         }
 
+        [HttpPut]
+        public IActionResult UpdateBook(Book book)
+        {
+            var result = _bookrepository.UpdateBook(book);
+
+            if (result is null)
+                return BadRequest("Could not update book");
+
+            return Ok(result);
+        }
     }
 }
