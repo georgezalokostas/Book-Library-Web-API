@@ -1,3 +1,4 @@
+using AutoMapper;
 using BookLibrary_API.Interfaces;
 using BookLibrary_API.Models;
 using BookLibrary_API.Repositories;
@@ -6,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddTransient<Mapper>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

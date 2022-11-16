@@ -4,7 +4,7 @@ namespace BookLibrary_API.Interfaces
 {
     public interface IBookRepository
     {
-        ICollection<Book> GetBooks();
+        List<BookDTO> GetBooks();
         Book? GetBookById(int id);
     }
 }

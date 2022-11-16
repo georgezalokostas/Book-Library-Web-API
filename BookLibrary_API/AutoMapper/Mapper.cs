@@ -8,5 +8,6 @@ public class Mapper  : Profile
 	public Mapper()
 	{
         CreateMap<Book, BookDTO>();
+        CreateMap<BookDTO, Book>();
     }
 }
