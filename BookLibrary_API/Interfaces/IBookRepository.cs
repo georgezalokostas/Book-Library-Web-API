@@ -6,5 +6,7 @@ namespace BookLibrary_API.Interfaces
     {
         List<BookDTO> GetBooks();
         Book? GetBookById(int id);
+        List<BookDTO> AddBook(Book book);
+        Book? DeleteBook(int id);
     }
 }

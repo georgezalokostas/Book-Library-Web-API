@@ -36,7 +36,33 @@ namespace BookLibrary_API.Controllers
         {
             var book = _bookrepository.GetBookById(id);
 
-            if(book == null)
+            if (book == null)
+                return BadRequest("Book Not Found");
+
+            return Ok(book);
+        }
+
+        [HttpPost]
+        public IActionResult AddBook(Book book)
+        {
+            _bookrepository.AddBook(new Book
+            {
+                Author = book.Author,
+                Title = book.Title,
+                ReleaseDate = book.ReleaseDate,
+                IsAvailable = true
+            });
+
+            return Ok(_bookrepository.GetBooks());
+        }
+
+        [HttpDelete]
+        [Route("api/delete/{id}")]
+        public IActionResult DeleteBook(int id)
+        {
+           var book = _bookrepository.DeleteBook(id);
+
+            if (book is null)
                 return BadRequest("Book Not Found");
 
             return Ok(book);

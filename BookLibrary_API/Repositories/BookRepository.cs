@@ -2,6 +2,7 @@
 using BookLibrary_API.Interfaces;
 using BookLibrary_API.Models;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary_API.Repositories
 {
@@ -24,6 +25,29 @@ namespace BookLibrary_API.Repositories
         public Book? GetBookById(int id)
         {
             return _context.Books.Where(x => x.Id == id).FirstOrDefault() ?? null;
+        }
+
+        public List<BookDTO> AddBook(Book book)
+        {
+            var myBook = _mapper.Map<Book>(book);
+            _context.Books.Add(myBook);
+
+            _context.SaveChanges();
+
+            return _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToList();
+        }
+
+        public Book? DeleteBook(int id)
+        {
+            var book = _context.Books.Where(x => x.Id == id).FirstOrDefault();
+
+            if (book != null)
+            {
+                _context.Books.Remove(book);
+                _context.SaveChanges();
+            }
+
+            return book;
         }
     }
 }
