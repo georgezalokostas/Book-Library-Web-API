@@ -27,9 +27,7 @@ namespace BookLibrary_API.Repositories
 
         public List<BookDTO> AddBook(Book book)
         {
-            var myBook = _mapper.Map<Book>(book);
-            _context.Books.Add(myBook);
-
+            _context.Books.Add(_mapper.Map<Book>(book));
             _context.SaveChanges();
 
             return _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToList();
