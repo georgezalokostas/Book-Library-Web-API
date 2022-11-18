@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookLibrary_API.Interfaces;
 using BookLibrary_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookLibrary_API.Repositories
 {
@@ -15,40 +16,40 @@ namespace BookLibrary_API.Repositories
             _mapper = mapper;
         }
 
-        public List<BookDTO> GetBooks()
+        public async Task<List<BookDTO>> GetBooks()
         {
-            return _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToList();
+            return await _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToListAsync();
         }
 
-        public Book? GetBookById(int id)
+        public async Task<Book?> GetBookById(int id)
         {
-            return _context.Books.Where(x => x.Id == id).FirstOrDefault() ?? null;
+            return await _context.Books.Where(x => x.Id == id).FirstOrDefaultAsync() ?? null;
         }
 
-        public List<BookDTO> AddBook(Book book)
+        public async Task<List<BookDTO>> AddBook(Book book)
         {
             _context.Books.Add(_mapper.Map<Book>(book));
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToList();
+            return await _context.Books.Select(x => _mapper.Map<BookDTO>(x)).ToListAsync();
         }
 
-        public Book? DeleteBook(int id)
+        public async Task<Book?> DeleteBook(int id)
         {
-            var book = _context.Books.Where(x => x.Id == id).FirstOrDefault();
+            var book = await _context.Books.Where(x => x.Id == id).FirstOrDefaultAsync();
 
             if (book != null)
             {
                 _context.Books.Remove(book);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return book;
         }
 
-        public Book? UpdateBook(Book book)
+        public async Task<Book?> UpdateBook(Book book)
         {
-            var myBook = _context.Books.Where(x => x.Id == book.Id).FirstOrDefault();
+            var myBook = await _context.Books.Where(x => x.Id == book.Id).FirstOrDefaultAsync();
 
             if (myBook != null)
             {
@@ -56,7 +57,7 @@ namespace BookLibrary_API.Repositories
                 myBook.ReleaseDate = book.ReleaseDate;
                 myBook.Title = book.Title;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return myBook;

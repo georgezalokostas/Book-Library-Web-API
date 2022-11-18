@@ -16,9 +16,9 @@ public class BookController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetBooks()
+    public async Task<IActionResult> GetBooks()
     {
-        var books = _bookrepository.GetBooks();
+        var books = await _bookrepository.GetBooks();
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -28,9 +28,9 @@ public class BookController : Controller
 
     [HttpGet]
     [Route("api/{id}")]
-    public IActionResult GetBookById(int id)
+    public async Task<IActionResult> GetBookById(int id)
     {
-        var book = _bookrepository.GetBookById(id);
+        var book = await _bookrepository.GetBookById(id);
 
         if (book == null)
             return BadRequest("Book Not Found");
@@ -39,9 +39,9 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddBook(Book book)
+    public async Task<IActionResult> AddBook(Book book)
     {
-        _bookrepository.AddBook(new Book
+        await _bookrepository.AddBook(new Book
         {
             Author = book.Author,
             Title = book.Title,
@@ -49,14 +49,14 @@ public class BookController : Controller
             IsAvailable = true
         });
 
-        return Ok(_bookrepository.GetBooks());
+        return Ok(await _bookrepository.GetBooks());
     }
 
     [HttpDelete]
     [Route("api/delete/{id}")]
-    public IActionResult DeleteBook(int id)
+    public async Task<IActionResult> DeleteBook(int id)
     {
-       var book = _bookrepository.DeleteBook(id);
+        var book = await _bookrepository.DeleteBook(id);
 
         if (book is null)
             return BadRequest("Book Not Found");
@@ -65,9 +65,9 @@ public class BookController : Controller
     }
 
     [HttpPut]
-    public IActionResult UpdateBook(Book book)
+    public async Task<IActionResult> UpdateBook(Book book)
     {
-        var result = _bookrepository.UpdateBook(book);
+        var result = await _bookrepository.UpdateBook(book);
 
         if (result is null)
             return BadRequest("Could not update book");
